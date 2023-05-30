@@ -1,0 +1,82 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class PersonTest {
+
+    @Test
+    public void testIsRetired() {
+        Person person1 = new Person("John", "Doe", 50);
+        assertFalse(person1.isRetired());
+
+        Person person2 = new Person("Jane", "Smith", 65);
+        assertTrue(person2.isRetired());
+    }
+}
+
+public class ManTest {
+
+    @Test
+    public void testGetPartner() {
+        Man man = new Man("John", "Doe", 30);
+        assertNull(man.getPartner());
+
+        Woman woman = new Woman("Jane", "Smith", 28);
+        man.setPartner(woman);
+        assertEquals(woman, man.getPartner());
+    }
+
+    @Test
+    public void testHasChangedLastName() {
+        Man man = new Man("John", "Doe", 35);
+        assertFalse(man.hasChangedLastName());
+
+        Woman woman = new Woman("Jane", "Smith", 33);
+        man.setPartner(woman);
+        assertTrue(man.hasChangedLastName());
+    }
+
+    @Test
+    public void testDeregisterPartnership() {
+        Man man = new Man("John", "Doe", 40);
+        Woman woman = new Woman("Jane", "Smith", 38);
+        man.setPartner(woman);
+
+        man.deregisterPartnership(false);
+        assertNull(man.getPartner());
+        assertFalse(man.hasChangedLastName());
+    }
+}
+
+public class WomanTest {
+
+    @Test
+    public void testGetPartner() {
+        Woman woman = new Woman("Jane", "Smith", 28);
+        assertNull(woman.getPartner());
+
+        Man man = new Man("John", "Doe", 30);
+        woman.setPartner(man);
+        assertEquals(man, woman.getPartner());
+    }
+
+    @Test
+    public void testGetOriginalLastName() {
+        Woman woman = new Woman("Jane", "Smith", 33);
+        assertEquals("Smith", woman.getOriginalLastName());
+
+        Man man = new Man("John", "Doe", 35);
+        woman.setPartner(man);
+        assertEquals(man.getLastName(), woman.getOriginalLastName());
+    }
+
+    @Test
+    public void testDeregisterPartnership() {
+        Woman woman = new Woman("Jane", "Smith", 38);
+        Man man = new Man("John", "Doe", 40);
+        woman.setPartner(man);
+
+        woman.deregisterPartnership(true);
+        assertNull(woman.getPartner());
+        assertEquals("Smith", woman.getLastName());
+    }
+}
